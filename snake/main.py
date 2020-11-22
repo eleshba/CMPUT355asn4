@@ -1,16 +1,61 @@
-# This is a sample Python script.
+import pygame
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+pygame.init()
+
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+purple = (147, 112, 219)
+
+dis = pygame.display.set_mode((600, 600))
+pygame.display.set_caption('Snake Game')
+
+game_over = False
+
+x = 300
+y = 300
+
+x_change = 0
+y_change = 0
+
+clock = pygame.time.Clock()
+
+while not game_over:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_over = True
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:  # LEFT KEY
+                x_change = -5
+                y_change = 0
+            elif event.key == pygame.K_RIGHT:  # RIGHT KEY
+                x_change = 5
+                y_change = 0
+            elif event.key == pygame.K_UP:  # UP KEY
+                y_change = -5
+                x_change = 0
+            elif event.key == pygame.K_DOWN:  # DOWN KEY
+                y_change = 5
+                x_change = 0
+
+    # Change the position each time a key is pressed
+    x += x_change
+    y += y_change
+
+    dis.fill(white)  # white background
+    pygame.draw.rect(dis, purple, [x, y, 10, 10])
+
+    pygame.display.update()
+
+    clock.tick(30)
+
+pygame.quit()
+quit()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main():
+    pass
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+main()
