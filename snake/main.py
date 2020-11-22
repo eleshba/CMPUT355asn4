@@ -7,7 +7,7 @@ black = (0, 0, 0)
 red = (255, 0, 0)
 purple = (147, 112, 219)
 
-dis = pygame.display.set_mode((600, 600))
+screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption('Snake Game')
 
 game_over = False
@@ -43,8 +43,8 @@ while not game_over:
     x += x_change
     y += y_change
 
-    dis.fill(white)  # white background
-    pygame.draw.rect(dis, purple, [x, y, 10, 10])
+    screen.fill(white)  # white background
+    pygame.draw.rect(screen, purple, [x, y, 10, 10])
 
     pygame.display.update()
 
