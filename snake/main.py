@@ -20,6 +20,15 @@ def main():
     icon = pygame.image.load('snake.png')
     pygame.display.set_icon(icon)
 
+    # eating SFX
+    eatsound = pygame.mixer.Sound('UI_Quirky7.wav')
+    # to play the sound call eatsound.play()
+
+    music = pygame.mixer.music.load('Hypnotic-Puzzle3.mp3')
+
+    # -1 is to make it continually play, 4000ms fade-in
+    pygame.mixer.music.play(-1, 0, 4000)
+
     font = pygame.font.SysFont(None, 30)
 
     clock = pygame.time.Clock()
@@ -65,6 +74,7 @@ def main():
         pygame.display.update()
         clock.tick(30)
 
+    pygame.mixer.music.unload()
     pygame.quit()
     quit()
 
