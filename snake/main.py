@@ -1,29 +1,39 @@
 import pygame
 
 
+def border(x, y, screen_width, head):
+    valid = False
+    if x < 0 or x > (screen_width - head) \
+            or y < 0 or y > (screen_width - head):
+        valid = True
+    return valid
+
+
 def main():
-    global game_over, screen, x_change, y_change,\
-        white, black, purple, red
+    global x, y, x_change, y_change
 
     pygame.init()
-
-    screen = pygame.display.set_mode((600, 600))
+    screen_width = 600
+    screen = pygame.display.set_mode((screen_width, screen_width))
     pygame.display.set_caption('Snake Game')
 
-    game_over = False
+    icon = pygame.image.load('snake.png')
+    pygame.display.set_icon(icon)
+
+    font = pygame.font.SysFont(None, 30)
+
+    clock = pygame.time.Clock()
+    white = (255, 255, 255)
+    purple = (128, 0, 128)
+
+    head = 10  # Snake head rect size 10 X 10
 
     x = 300
     y = 300
-
     x_change = 0
     y_change = 0
 
-    white = (255, 255, 255)
-    black = (0, 0, 0)
-    red = (255, 0, 0)
-    purple = (147, 112, 219)
-
-    clock = pygame.time.Clock()
+    game_over = False
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -43,15 +53,16 @@ def main():
                     y_change = 5
                     x_change = 0
 
+        if border(x, y, screen_width, head):
+            game_over = True
+
         # Change the position each time a key is pressed
         x += x_change
         y += y_change
 
         screen.fill(white)  # white background
-        pygame.draw.rect(screen, purple, [x, y, 10, 10])
-
+        pygame.draw.rect(screen, purple, [x, y, head, head])
         pygame.display.update()
-
         clock.tick(30)
 
     pygame.quit()
