@@ -13,4 +13,6 @@ Resource attributions:
   snake icon for window:
   <div>Icons made by <a href="https://www.flaticon.com/authors/monkik" title="monkik">monkik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>   </div>
 
+
 font "8-bit wonder" by Joiro Hatagaya
+https://www.dafont.com/8bit-wonder.font
