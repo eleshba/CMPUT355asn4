@@ -1,4 +1,5 @@
 import pygame
+import Snake
 
 
 def border(x, y, screen_width, head):
@@ -37,41 +38,44 @@ def main():
 
     head = 10  # Snake head rect size 10 X 10
 
-    x = 300
-    y = 300
-    x_change = 0
-    y_change = 0
+#    x = 300
+#    y = 300
+#    x_change = 0
+#    y_change = 0
 
     game_over = False
+    snake = Snake.Snake()
     while not game_over:
+        screen.fill(white)  # white background
+        snake.move_snake()
+        snake.draw_snake(screen)
+        pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:  # LEFT KEY
-                    x_change = -5
-                    y_change = 0
+                    snake.change_dir((-1,0))
                 elif event.key == pygame.K_RIGHT:  # RIGHT KEY
-                    x_change = 5
-                    y_change = 0
+                    snake.change_dir((1,0))
                 elif event.key == pygame.K_UP:  # UP KEY
-                    y_change = -5
-                    x_change = 0
+                    snake.change_dir((0,-1))
                 elif event.key == pygame.K_DOWN:  # DOWN KEY
-                    y_change = 5
-                    x_change = 0
+                    snake.change_dir((0,1))
+                elif event.key == pygame.K_SPACE:
+                    snake.grow()
 
-        if border(x, y, screen_width, head):
-            game_over = True
+        #if border(x, y, screen_width, head):
+        #   game_over = True
+
 
         # Change the position each time a key is pressed
-        x += x_change
-        y += y_change
+        #x += x_change
+        #y += y_change
 
-        screen.fill(white)  # white background
-        pygame.draw.rect(screen, purple, [x, y, head, head])
-        pygame.display.update()
+        #pygame.draw.rect(screen, purple, [x, y, head, head])
+
         clock.tick(30)
 
     pygame.mixer.music.unload()
