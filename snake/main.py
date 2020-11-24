@@ -1,9 +1,33 @@
 import pygame
 import sys
 import time
+import random
 
 
 from background import background, rotate
+
+
+class Food:
+    def __init__(self, screen):
+        self.screen = screen
+        self.image = pygame.image.load('apple.png')
+        self.x = 120
+        self.y = 120
+
+    def move(self):
+        self.x = random.randint(0, 15) * 40
+        self.y = random.randint(0, 15) * 40
+
+    def draw(self):
+        self.screen.blit(self.image, (self.x, self.y))
+        pygame.display.flip()
+
+
+def collision(x1, y1, x2, y2):
+    if x1 >= x2 and x1 < x2 + 40:
+        if y1 >= y2 and y1 < y2 + 40:
+            return True
+    return False
 
 
 def border(x, y, screen_width, head):
@@ -30,7 +54,7 @@ def menu():
 
 
 def main():
-    global x, y, x_change, y_change
+    global x, y, x_change, y_change, screen_width
 
     pygame.init()
     clock = pygame.time.Clock()
@@ -66,6 +90,13 @@ def main():
 
     FPS = 30
     lasttime = time.time()  # how many secs have passed.
+
+    food = Food(screen)
+    food.draw()
+    #food.rect.x = random.randint(50, screen_width - 50)
+    #food.rect.y = random.randint(50, screen_width - 50)
+
+
 
     # game running loop
     game_over = False
@@ -109,6 +140,11 @@ def main():
         y += y_change * dt
 
         pygame.draw.rect(screen, white, [x, y, head, head])
+        food.draw()
+
+        if collision(x,y, food.x, food.y):
+            food.move()
+
         pygame.display.flip()
         clock.tick(FPS)
 
