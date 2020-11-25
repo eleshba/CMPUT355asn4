@@ -33,7 +33,7 @@ def collision(sx, sy, fx, fy):
 def score():
     score_font = pygame.font.SysFont("gabriola", 40)
     fscore = score_font.render(f"Your Score: {0}", True, black)
-    screen.blit(fscore, (50, 20))
+    screen.blit(fscore, (40, 10))
 
 
 
@@ -73,7 +73,7 @@ def main():
     icon = pygame.image.load('snake.png')
     pygame.display.set_icon(icon)
 
-    eat = music()
+    #eat = music()
 
     # images
     light = pygame.image.load("circle.png").convert  # set behind the food for glow effect.
@@ -84,7 +84,7 @@ def main():
     black = (0, 0, 0, 150)
     white = (255, 255, 255, 50)
 
-    head = 12  # Snake head size 10 X 10
+    head = 10  # Snake head size 10 X 10
 
     # starting position for snake
     x = 300
@@ -100,9 +100,9 @@ def main():
     lasttime = time.time()  # how many secs have passed.
 
     food = Food(screen)
-    food.draw()
-    #food.rect.x = random.randint(50, screen_width - 50)
-    #food.rect.y = random.randint(50, screen_width - 50)
+
+
+
 
 
 
@@ -115,10 +115,11 @@ def main():
         lasttime = time.time()
 
         angle += 1 * dt
+
         screen.fill((255, 255, 255))
         img_rotated, img_rect = rotate(img, angle)
-
         screen.blit(img_rotated, img_rect)
+        score()
         background(screen, black)
 
         for event in pygame.event.get():
@@ -147,16 +148,21 @@ def main():
         x += x_change * dt
         y += y_change * dt
 
+
         pygame.draw.rect(screen, white, [x, y, head, head])
         food.draw()
-        score()
-        pygame.display.flip()
+
+
+
 
         if collision(x, y, food.x, food.y):
             food.move()
 
+
         pygame.display.flip()
+
         clock.tick(FPS)
+
 
     pygame.mixer.music.unload()
     pygame.quit()
