@@ -15,19 +15,27 @@ class Food:
         self.y = 120
 
     def move(self):
-        self.x = random.randint(0, 15) * 40
-        self.y = random.randint(0, 15) * 40
+        self.x = random.randint(0, 14) * 40
+        self.y = random.randint(0, 14) * 40
 
     def draw(self):
         self.screen.blit(self.image, (self.x, self.y))
         pygame.display.flip()
 
 
-def collision(x1, y1, x2, y2):
-    if x1 >= x2 and x1 < x2 + 40:
-        if y1 >= y2 and y1 < y2 + 40:
+def collision(sx, sy, fx, fy):
+    if sx >= fx and sx < fx + 40:
+        if sy >= fy and sy < fy + 40:
             return True
     return False
+
+
+def score():
+    score_font = pygame.font.SysFont("gabriola", 40)
+    fscore = score_font.render(f"Your Score: {0}", True, black)
+    screen.blit(fscore, (50, 20))
+
+
 
 
 def border(x, y, screen_width, head):
@@ -54,7 +62,7 @@ def menu():
 
 
 def main():
-    global x, y, x_change, y_change, screen_width
+    global x, y, x_change, y_change, screen_width, black, screen
 
     pygame.init()
     clock = pygame.time.Clock()
@@ -141,8 +149,10 @@ def main():
 
         pygame.draw.rect(screen, white, [x, y, head, head])
         food.draw()
+        score()
+        pygame.display.flip()
 
-        if collision(x,y, food.x, food.y):
+        if collision(x, y, food.x, food.y):
             food.move()
 
         pygame.display.flip()
