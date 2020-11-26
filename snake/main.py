@@ -1,9 +1,39 @@
 import pygame
 import sys
 import time
+import random
 
 
 from background import background, rotate
+
+
+class Food:
+    def __init__(self, screen):
+        self.screen = screen
+        self.image = pygame.image.load('apple.png')
+        self.x = 120
+        self.y = 120
+
+    def move(self):
+        self.x = random.randint(0, 14) * 40
+        self.y = random.randint(0, 14) * 40
+
+    def draw(self):
+        self.screen.blit(self.image, (self.x, self.y))
+        pygame.display.flip()
+
+
+def collision(sx, sy, fx, fy):
+    if sx >= fx and sx < fx + 40:
+        if sy >= fy and sy < fy + 40:
+            return True
+    return False
+
+
+def score():
+    score_font = pygame.font.SysFont("gabriola", 40)
+    fscore = score_font.render(f"Your Score: {0}", True, black)
+    screen.blit(fscore, (20, 10))
 
 
 def border(x, y, screen_width, head):
@@ -30,7 +60,7 @@ def menu():
 
 
 def main():
-    global x, y, x_change, y_change
+    global x, y, x_change, y_change, screen_width, black, screen
 
     pygame.init()
     clock = pygame.time.Clock()
@@ -52,7 +82,7 @@ def main():
     black = (0, 0, 0, 150)
     white = (255, 255, 255, 50)
 
-    head = 12  # Snake head size 10 X 10
+    head = 10  # Snake head size 10 X 10
 
     # starting position for snake
     x = 300
@@ -67,6 +97,8 @@ def main():
     FPS = 30
     lasttime = time.time()  # how many secs have passed.
 
+    food = Food(screen)
+
     # game running loop
     game_over = False
     while not game_over:
@@ -76,10 +108,11 @@ def main():
         lasttime = time.time()
 
         angle += 1 * dt
+
         screen.fill((255, 255, 255))
         img_rotated, img_rect = rotate(img, angle)
-
         screen.blit(img_rotated, img_rect)
+        score()
         background(screen, black)
 
         for event in pygame.event.get():
@@ -109,7 +142,13 @@ def main():
         y += y_change * dt
 
         pygame.draw.rect(screen, white, [x, y, head, head])
+        food.draw()
+
+        if collision(x, y, food.x, food.y):
+            food.move()
+
         pygame.display.flip()
+
         clock.tick(FPS)
 
     pygame.mixer.music.unload()
