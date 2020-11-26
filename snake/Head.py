@@ -1,9 +1,10 @@
-import Node
 import pygame
+
 
 class Head:
     black = (0, 0, 0)
     dimension = 10
+
     def __init__(self, coordinates, velocity):
         self.coordinates = coordinates
         self.velocity = velocity

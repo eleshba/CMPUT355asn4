@@ -6,6 +6,7 @@ class Snake:
     starting_pos = (300, 300)
     body_size = (10, 10)
     purple = (128, 0, 128)
+
     def __init__(self):
         self.body = deque([])
         self.head = Head.Head(self.starting_pos, (1, 0))
@@ -30,12 +31,8 @@ class Snake:
         # move the head
         self.head.move_head()
 
-
     def grow(self):
         if not self.body:
             self.body.append(self.head.coordinates)
         else:
             self.body.append(self.body[-1])
-
-
-

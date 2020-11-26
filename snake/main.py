@@ -4,7 +4,6 @@ import sys
 import time
 import random
 
-
 from background import background, rotate
 
 
@@ -37,10 +36,10 @@ def score():
     screen.blit(fscore, (20, 10))
 
 
-def border(x, y, screen_width, head):
+def border(tuple, screen_width, head):
     valid = False
-    if x < 0 or x > (screen_width - head) \
-            or y < 0 or y > (screen_width - head):
+    if tuple[0] < 0 or tuple[0] > (screen_width - head) \
+            or tuple[1] < 0 or tuple[1] > (screen_width - head):
         valid = True
     return valid
 
@@ -72,7 +71,7 @@ def main():
     icon = pygame.image.load('snake.png')
     pygame.display.set_icon(icon)
 
-    eat = music()
+    # eat = music()
 
     # images
     light = pygame.image.load("circle.png").convert  # set behind the food for glow effect.
@@ -95,14 +94,14 @@ def main():
     game_over = False
     snake = Snake.Snake()
     while not game_over:
-       
-        dt = time.time() - lasttime     # time in seconds
+
+        dt = time.time() - lasttime  # time in seconds
         dt *= 30
         lasttime = time.time()
 
         angle += 1 * dt
 
-        screen.fill(white) # white background
+        screen.fill(white)  # white background
         img_rotated, img_rect = rotate(img, angle)
         screen.blit(img_rotated, img_rect)
         score()
@@ -112,7 +111,6 @@ def main():
         snake.draw_snake(screen)
         # pygame.display.update()
 
-
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -120,30 +118,27 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:  # LEFT KEY
-                    snake.change_dir((-1,0))
+                    snake.change_dir((-1, 0))
                 elif event.key == pygame.K_RIGHT:  # RIGHT KEY
-                    snake.change_dir((1,0))
+                    snake.change_dir((1, 0))
                 elif event.key == pygame.K_UP:  # UP KEY
-                    snake.change_dir((0,-1))
+                    snake.change_dir((0, -1))
                 elif event.key == pygame.K_DOWN:  # DOWN KEY
-                    snake.change_dir((0,1))
+                    snake.change_dir((0, 1))
                 elif event.key == pygame.K_SPACE:
                     snake.grow()
 
-        #if border(x, y, screen_width, head):
-        #   game_over = True
-
-
-        # Change the position each time a key is pressed
+        if border(snake.head.coordinates, screen_width, head):
+            game_over = True
 
         # x += x_change * dt
         # y += y_change * dt
 
-        pygame.draw.rect(screen, white, [x, y, head, head])
+        # pygame.draw.rect(screen, white, [x, y, head, head])
         food.draw()
 
-        if collision(x, y, food.x, food.y):
-            food.move()
+        # if collision(x, y, food.x, food.y):
+        #     food.move()
 
         pygame.display.flip()
 
