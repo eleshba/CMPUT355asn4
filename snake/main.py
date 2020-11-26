@@ -33,9 +33,7 @@ def collision(sx, sy, fx, fy):
 def score():
     score_font = pygame.font.SysFont("gabriola", 40)
     fscore = score_font.render(f"Your Score: {0}", True, black)
-    screen.blit(fscore, (40, 10))
-
-
+    screen.blit(fscore, (20, 10))
 
 
 def border(x, y, screen_width, head):
@@ -73,7 +71,7 @@ def main():
     icon = pygame.image.load('snake.png')
     pygame.display.set_icon(icon)
 
-    #eat = music()
+    eat = music()
 
     # images
     light = pygame.image.load("circle.png").convert  # set behind the food for glow effect.
@@ -100,11 +98,6 @@ def main():
     lasttime = time.time()  # how many secs have passed.
 
     food = Food(screen)
-
-
-
-
-
 
     # game running loop
     game_over = False
@@ -148,21 +141,15 @@ def main():
         x += x_change * dt
         y += y_change * dt
 
-
         pygame.draw.rect(screen, white, [x, y, head, head])
         food.draw()
-
-
-
 
         if collision(x, y, food.x, food.y):
             food.move()
 
-
         pygame.display.flip()
 
         clock.tick(FPS)
-
 
     pygame.mixer.music.unload()
     pygame.quit()
