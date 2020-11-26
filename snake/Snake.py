@@ -36,3 +36,9 @@ class Snake:
             self.body.append(self.head.coordinates)
         else:
             self.body.append(self.body[-1])
+
+    def istouching(self):
+        for bodypart in self.body:
+            if self.head.coordinates == bodypart:
+                return True
+        return False

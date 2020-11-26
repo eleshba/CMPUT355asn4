@@ -23,16 +23,16 @@ class Food:
         pygame.display.flip()
 
 
-def collision(sx, sy, fx, fy):
-    if sx >= fx and sx < fx + 40:
-        if sy >= fy and sy < fy + 40:
+def collision(head_coords, fx, fy):
+    if head_coords[0] >= fx and head_coords[0] < fx + 40:
+        if head_coords[1] >= fy and head_coords[1] < fy + 40:
             return True
     return False
 
 
-def score():
+def score(snake):
     score_font = pygame.font.SysFont("gabriola", 40)
-    fscore = score_font.render(f"Your Score: {0}", True, black)
+    fscore = score_font.render(f"Your Score: {len(snake.body)}", True, black)
     screen.blit(fscore, (20, 10))
 
 
@@ -104,11 +104,13 @@ def main():
         screen.fill(white)  # white background
         img_rotated, img_rect = rotate(img, angle)
         screen.blit(img_rotated, img_rect)
-        score()
+        score(snake)
         background(screen, black)
 
         snake.move_snake()
         snake.draw_snake(screen)
+        if snake.istouching():
+            game_over = True
         # pygame.display.update()
 
         for event in pygame.event.get():
@@ -125,20 +127,16 @@ def main():
                     snake.change_dir((0, -1))
                 elif event.key == pygame.K_DOWN:  # DOWN KEY
                     snake.change_dir((0, 1))
-                elif event.key == pygame.K_SPACE:
-                    snake.grow()
 
         if border(snake.head.coordinates, screen_width, head):
             game_over = True
 
-        # x += x_change * dt
-        # y += y_change * dt
-
-        # pygame.draw.rect(screen, white, [x, y, head, head])
         food.draw()
 
-        # if collision(x, y, food.x, food.y):
-        #     food.move()
+        if collision(snake.head.coordinates, food.x, food.y):
+            food.move()
+            snake.grow()
+
 
         pygame.display.flip()
 
