@@ -1,4 +1,5 @@
 import pygame
+import Snake
 import sys
 import time
 import random
@@ -83,15 +84,6 @@ def main():
     white = (255, 255, 255, 50)
 
     head = 10  # Snake head size 10 X 10
-
-    # starting position for snake
-    x = 300
-    y = 300
-
-    # change in snakes position
-    x_change = 0
-    y_change = 0
-
     angle = 0  # used to rotate image
 
     FPS = 30
@@ -101,6 +93,7 @@ def main():
 
     # game running loop
     game_over = False
+    snake = Snake.Snake()
     while not game_over:
        
         dt = time.time() - lasttime     # time in seconds
@@ -109,11 +102,16 @@ def main():
 
         angle += 1 * dt
 
-        screen.fill((255, 255, 255))
+        screen.fill(white) # white background
         img_rotated, img_rect = rotate(img, angle)
         screen.blit(img_rotated, img_rect)
         score()
         background(screen, black)
+
+        snake.move_snake()
+        snake.draw_snake(screen)
+        # pygame.display.update()
+
 
         for event in pygame.event.get():
 
@@ -122,24 +120,24 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:  # LEFT KEY
-                    x_change = -5
-                    y_change = 0
+                    snake.change_dir((-1,0))
                 elif event.key == pygame.K_RIGHT:  # RIGHT KEY
-                    x_change = 5
-                    y_change = 0
+                    snake.change_dir((1,0))
                 elif event.key == pygame.K_UP:  # UP KEY
-                    y_change = -5
-                    x_change = 0
+                    snake.change_dir((0,-1))
                 elif event.key == pygame.K_DOWN:  # DOWN KEY
-                    y_change = 5
-                    x_change = 0
+                    snake.change_dir((0,1))
+                elif event.key == pygame.K_SPACE:
+                    snake.grow()
 
-        if border(x, y, screen_width, head):
-            game_over = True
+        #if border(x, y, screen_width, head):
+        #   game_over = True
+
 
         # Change the position each time a key is pressed
-        x += x_change * dt
-        y += y_change * dt
+
+        # x += x_change * dt
+        # y += y_change * dt
 
         pygame.draw.rect(screen, white, [x, y, head, head])
         food.draw()
