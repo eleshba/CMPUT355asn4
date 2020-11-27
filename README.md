@@ -1,6 +1,6 @@
 # CMPUT355asn4
 
-Video Link for Our project:<https://drive.google.com/file/d/1t7gC_0D_5WA_I9BP55T20Atq_dykvJOL/view?usp=sharing>
+Video Link for Our project: <https://drive.google.com/file/d/1t7gC_0D_5WA_I9BP55T20Atq_dykvJOL/view?usp=sharing>
 
 
 Resource attributions:
