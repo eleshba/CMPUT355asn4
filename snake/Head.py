@@ -4,7 +4,7 @@ import time
 
 class Head:
     black = (0, 0, 0)
-    dimension = 10
+    dimension = 8
 
     def __init__(self, coordinates, velocity):
         self.coordinates = coordinates
@@ -17,5 +17,5 @@ class Head:
         self.coordinates = (new_x, new_y)
 
     def draw_head(self, screen):
-        rect = pygame.Rect(self.coordinates, (self.dimension, self.dimension))
+        rect = pygame.Rect(self.coordinates, (10, 10))
         pygame.draw.rect(screen, self.black, rect)
