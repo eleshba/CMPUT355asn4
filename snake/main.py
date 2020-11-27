@@ -46,10 +46,15 @@ def border(coord, screen_width, head):
 
 
 def music():
-    # pygame.mixer.music.load('Hypnotic-Puzzle3.mp3')
-    # pygame.mixer.music.play(-1, 0, 5000)  # -1 is to make it continually play, 4000ms fade-in
+    pygame.mixer.music.load('Hypnotic-Puzzle3.mp3')
+
+    # -1 is to make it continually play, 4000ms fade-in
+    pygame.mixer.music.play(-1, 0, 5000)
+    pygame.mixer.music.set_volume(0.10)
 
     eatsound = pygame.mixer.Sound('UI_Quirky7.wav')
+    eatsound.set_volume(0.05)
+
     # to play the sound call eatsound.play()
 
     return eatsound
