@@ -2,7 +2,7 @@
 
 Video Link for Our project: <https://drive.google.com/file/d/1t7gC_0D_5WA_I9BP55T20Atq_dykvJOL/view?usp=sharing>
 
-(We have sound effect when the snake eats the apple, but the recording didn't record the sound.)
+(We have background music and sound effect when the snake eats the apple, but the recording didn't record the sound.)
 
 
 Resource attributions:
