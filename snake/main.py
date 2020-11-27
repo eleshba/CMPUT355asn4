@@ -10,43 +10,44 @@ from background import background, rotate
 class Food:
     def __init__(self, screen):
         self.screen = screen
-        self.image = pygame.image.load('apple.png')
+        self.image = pygame.image.load('apple30.png')
         self.x = 120
         self.y = 120
 
     def move(self):
-        self.x = random.randint(0, 14) * 40
-        self.y = random.randint(0, 14) * 40
+        self.x = random.randint(0, 14) * 30
+        self.y = random.randint(0, 14) * 30
 
     def draw(self):
+
         self.screen.blit(self.image, (self.x, self.y))
         pygame.display.flip()
 
 
-def collision(head_coords, fx, fy):
-    if head_coords[0] >= fx and head_coords[0] < fx + 40:
-        if head_coords[1] >= fy and head_coords[1] < fy + 40:
+def collision(head_coord, fx, fy):
+    if fx <= head_coord[0] < fx + 30:
+        if fy <= head_coord[1] < fy + 30:
             return True
     return False
 
 
 def score(snake):
-    score_font = pygame.font.SysFont("gabriola", 40)
-    fscore = score_font.render(f"Your Score: {len(snake.body)}", True, black)
-    screen.blit(fscore, (20, 10))
+    score_font = pygame.font.Font("8-BIT WONDER.TTF", 20)
+    f_score = score_font.render(f"Score {len(snake.body)}", True, black)
+    screen.blit(f_score, (20, 10))
 
 
-def border(tuple, screen_width, head):
+def border(coord, screen_width, head):
     valid = False
-    if tuple[0] < 0 or tuple[0] > (screen_width - head) \
-            or tuple[1] < 0 or tuple[1] > (screen_width - head):
+    if coord[0] < 0 or coord[0] > (screen_width - head) \
+            or coord[1] < 0 or coord[1] > (screen_width - head):
         valid = True
     return valid
 
 
 def music():
-    pygame.mixer.music.load('Hypnotic-Puzzle3.mp3')
-    pygame.mixer.music.play(-1, 0, 5000)  # -1 is to make it continually play, 4000ms fade-in
+    # pygame.mixer.music.load('Hypnotic-Puzzle3.mp3')
+    # pygame.mixer.music.play(-1, 0, 5000)  # -1 is to make it continually play, 4000ms fade-in
 
     eatsound = pygame.mixer.Sound('UI_Quirky7.wav')
     # to play the sound call eatsound.play()
@@ -54,14 +55,16 @@ def music():
     return eatsound
 
 
-def menu():
-    # font = pygame.font.SysFont("8-BIT WONDER.TTF", 30)
-    pass
+def restart():
+    font = pygame.font.Font("8-BIT WONDER.TTF", 15)
+    respawn = font.render("Press space bar to Respawn or x to Quit", True, (0, 0, 0))
+    rect = respawn.get_rect()
+    rect.center = screen.get_rect().center
+    screen.blit(respawn, rect)
+    pygame.display.flip()
 
 
-def main():
-    global x, y, x_change, y_change, screen_width, black, screen
-
+def game_loop():
     pygame.init()
     clock = pygame.time.Clock()
 
@@ -71,53 +74,60 @@ def main():
     icon = pygame.image.load('snake.png')
     pygame.display.set_icon(icon)
 
-    # eat = music()
-
-    # images
-    light = pygame.image.load("circle.png").convert  # set behind the food for glow effect.
-    # screen.blit(light, (food_x_coordinate, food_y_coordinate))
+    eatfx = music()
     img = pygame.image.load("bg.png").convert()
 
     # colors
     black = (0, 0, 0, 150)
     white = (255, 255, 255, 50)
 
-    head = 10  # Snake head size 10 X 10
     angle = 0  # used to rotate image
 
     FPS = 30
-    lasttime = time.time()  # how many secs have passed.
+    last_time = time.time()
 
     food = Food(screen)
-
-    # game running loop
-    game_over = False
     snake = Snake.Snake()
+
+    # game loop
+    game_over = False
     while not game_over:
 
-        dt = time.time() - lasttime  # time in seconds
+        dt = time.time() - last_time  # time in seconds
         dt *= 30
-        lasttime = time.time()
+        last_time = time.time()
 
+        # set background -------------------------------------
         angle += 1 * dt
-
-        screen.fill(white)  # white background
+        screen.fill(white)
         img_rotated, img_rect = rotate(img, angle)
         screen.blit(img_rotated, img_rect)
         score(snake)
         background(screen, black)
+        # -------------------------------------------------------
 
         snake.move_snake()
         snake.draw_snake(screen)
+        food.draw()
+
+        if border(snake.head.coordinates, screen_width, snake.body_size[0]):
+            game_over = True
+            return False
+
         if snake.istouching():
             game_over = True
-        # pygame.display.update()
+            return False
+
+        if collision(snake.head.coordinates, food.x, food.y):
+            eatfx.play()
+            food.move()
+            snake.grow()
 
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
-                game_over = True
-
+                pygame.quit()
+                quit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:  # LEFT KEY
                     snake.change_dir((-1, 0))
@@ -128,19 +138,29 @@ def main():
                 elif event.key == pygame.K_DOWN:  # DOWN KEY
                     snake.change_dir((0, 1))
 
-        if border(snake.head.coordinates, screen_width, head):
-            game_over = True
-
-        food.draw()
-
-        if collision(snake.head.coordinates, food.x, food.y):
-            food.move()
-            snake.grow()
-
-
         pygame.display.flip()
-
         clock.tick(FPS)
+
+
+def main():
+    global black, screen
+    screen_width = 600
+    screen = pygame.display.set_mode((screen_width, screen_width))
+
+    black = (0, 0, 0, 150)
+
+    player_alive = game_loop()
+
+    while not player_alive:
+        restart()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                player_alive = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_x:  # 'X' KEY
+                    player_alive = True
+                if event.key == pygame.K_SPACE:  # space bar
+                    main()
 
     pygame.mixer.music.unload()
     pygame.quit()

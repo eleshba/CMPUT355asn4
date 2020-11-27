@@ -1,6 +1,7 @@
 import pygame
 import time
 
+
 class Head:
     black = (0, 0, 0)
     dimension = 10
@@ -9,8 +10,7 @@ class Head:
         self.coordinates = coordinates
         self.velocity = velocity
 
-    def move_head(self,):
-
+    def move_head(self):
         new_x = self.coordinates[0] + self.dimension * self.velocity[0]
         new_y = self.coordinates[1] + self.dimension * self.velocity[1]
 
